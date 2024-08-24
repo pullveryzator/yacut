@@ -29,6 +29,7 @@ def index_view():
                 'blank_short_id'
             )
             custom_id = get_unique_short_id()
+        print(custom_id)
         if URLMap.query.filter_by(short=custom_id).first():
             flash('Такая короткая ссылка уже существует.', 'not_unique')
             return render_template('index.html', form=form)
@@ -38,7 +39,7 @@ def index_view():
         )
         db.session.add(urlmap)
         db.session.commit()
-        root_url = request.base_url
+        root_url = request.root_url
         full_short_link = urljoin(root_url, custom_id)
         flash(full_short_link, 'success_link')
     return render_template('index.html', form=form)
