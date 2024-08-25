@@ -29,7 +29,6 @@
             </li>
           </ul>
         </div>
-
       </div>
     </nav>
   </header>
@@ -50,7 +49,17 @@
               <div>
                 <div>
                    {{ form.original_link(class="form-control form-control-lg py-3 mb-3", placeholder=form.original_link.label.text) }}
-                  <p><span style="color:red">Текст возможной ошибки</span></p>
+                  <p>
+                    <span style="color:red">
+                      {% with messages = get_flashed_messages(category_filter=['invalid_url']) %}
+                        {% if messages %}
+                          {% for message in messages %}
+                            {{ message }}
+                          {% endfor %}
+                        {% endif %}
+                      {% endwith %}
+                    </span>
+                  </p>
                 </div>
                 <div>
                    {{ form.custom_id(class="form-control form-control-lg py-3 mb-3", placeholder=form.custom_id.label.text) }}
@@ -76,7 +85,7 @@
       </div>
 
       <div class="container">
-        <div class="row ">
+        <div class="row">
           <div class="col-sm">
           </div>
           <div class="col-sm">

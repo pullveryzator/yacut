@@ -29,10 +29,9 @@ def index_view():
                 'blank_short_id'
             )
             custom_id = get_unique_short_id()
-        print(custom_id)
         if URLMap.query.filter_by(short=custom_id).first():
             flash('Такая короткая ссылка уже существует.', 'not_unique')
-            return render_template('index.html', form=form)
+            return render_template('urlmap.html', form=form)
         urlmap = URLMap(
             original=original_link,
             short=custom_id
@@ -42,10 +41,15 @@ def index_view():
         root_url = request.root_url
         full_short_link = urljoin(root_url, custom_id)
         flash(full_short_link, 'success_link')
-    return render_template('index.html', form=form)
+    else:
+        flash(
+            'Пожалуйста, введите корректный URL, например: http://foo.com',
+            'invalid_url'
+        )
+    return render_template('urlmap.html', form=form)
 
 
-@app.route('/<string:short_id>', methods=['GET'])
+@app.route('/<string:short_id>', methods=['GET', ])
 def redirect_view(short_id):
     original_link = URLMap.query.filter_by(short=short_id).first().original
     return redirect(original_link)

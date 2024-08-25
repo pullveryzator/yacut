@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}404. Увы, но здесь нет ничего...{% endblock %}
+{% block content %}
+<main>
+  <section class="container my-5 px-4 text-center">
+    <h1 class="text-danger">Ошибка 404</h1>
+      <p class="my-4">Страница не найдена, но не стоит терять надежду...😊</p>
+      <a href="{{ url_for('index_view') }}" class="btn btn-primary mt-4">Вернуться на главную</a>
+  </section>
+</main>
+{% endblock %}
