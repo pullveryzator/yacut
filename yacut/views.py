@@ -55,7 +55,9 @@ def index_view():
     return render_template('urlmap.html', form=form)
 
 
-@app.route('/<string:short_id>/', methods=['GET', ])
+@app.route('/<string:short_id>', methods=['GET', ])
 def redirect_view(short_id):
-    original_link = URLMap.query.filter_by(short=short_id).first().original
-    return redirect(original_link)
+    obj = URLMap.query.filter_by(short=short_id).first()
+    if obj:
+        return redirect(obj.original)
+    return render_template('404.html'), 404
