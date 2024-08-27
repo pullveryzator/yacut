@@ -1,12 +1,13 @@
 import random
 import string
-from flask import render_template, redirect, request, flash
 from urllib.parse import urljoin
 
+from flask import flash, redirect, render_template, request
+
 from . import app, db
-from .models import URLMap
 from .constants import CUSTOM_ID_DEFAULT_LENGTH
 from .forms import URLMapForm
+from .models import URLMap
 
 
 def get_unique_short_id():
@@ -14,6 +15,8 @@ def get_unique_short_id():
     random_string = ''.join(
         random.choice(characters) for _ in range(CUSTOM_ID_DEFAULT_LENGTH)
         )
+    if URLMap.query.filter_by(short=random_string).first() is not None:
+        get_unique_short_id()
     return random_string
 
 
@@ -30,7 +33,10 @@ def index_view():
             )
             custom_id = get_unique_short_id()
         if URLMap.query.filter_by(short=custom_id).first():
-            flash('Такая короткая ссылка уже существует.', 'not_unique')
+            flash(
+                'Предложенный вариант короткой ссылки уже существует.',
+                'not_unique'
+            )
             return render_template('urlmap.html', form=form)
         urlmap = URLMap(
             original=original_link,
@@ -49,7 +55,7 @@ def index_view():
     return render_template('urlmap.html', form=form)
 
 
-@app.route('/<string:short_id>', methods=['GET', ])
+@app.route('/<string:short_id>/', methods=['GET', ])
 def redirect_view(short_id):
     original_link = URLMap.query.filter_by(short=short_id).first().original
     return redirect(original_link)

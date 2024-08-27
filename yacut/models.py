@@ -17,3 +17,14 @@ class URLMap(db.Model):
         db.DateTime,
         index=True,
         default=datetime.now(timezone.utc))
+
+    def to_dict(self):
+        return dict(
+            original=self.original,
+            short=self.short
+        )
+
+    def from_dict(self, data):
+        for field in ['original', 'short', 'timestamp']:
+            if field in data:
+                setattr(self, field, data[field])
