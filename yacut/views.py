@@ -1,23 +1,12 @@
-import random
-import string
 from urllib.parse import urljoin
 
 from flask import flash, redirect, render_template, request
 
 from . import app, db
-from .constants import CUSTOM_ID_DEFAULT_LENGTH, PAGE_NOT_FOUND_ERROR_CODE
+from .constants import PAGE_NOT_FOUND_ERROR_CODE
 from .forms import URLMapForm
 from .models import URLMap
-
-
-def get_unique_short_id():
-    characters = string.ascii_letters + string.digits
-    random_string = ''.join(
-        random.choice(characters) for _ in range(CUSTOM_ID_DEFAULT_LENGTH)
-        )
-    if URLMap.query.filter_by(short=random_string).first() is not None:
-        get_unique_short_id()
-    return random_string
+from .utils import get_unique_short_id
 
 
 @app.route('/', methods=['GET', 'POST'])

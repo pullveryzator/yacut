@@ -8,7 +8,7 @@ from .constants import (CREATED_CODE, PAGE_NOT_FOUND_ERROR_CODE,
 from .error_handlers import YaCutAPIException
 from .models import URLMap
 from .validators import validate_short_id
-from .views import get_unique_short_id
+from .utils import get_unique_short_id
 
 
 @app.route('/api/id/', methods=['POST'])
