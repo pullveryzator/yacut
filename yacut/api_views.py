@@ -7,8 +7,8 @@ from .constants import (CREATED_CODE, PAGE_NOT_FOUND_ERROR_CODE,
                         SUCCESSFULL_CODE)
 from .error_handlers import YaCutAPIException
 from .models import URLMap
-from .validators import validate_short_id
 from .utils import get_unique_short_id
+from .validators import validate_short_id
 
 
 @app.route('/api/id/', methods=['POST'])
@@ -38,11 +38,8 @@ def create_id():
     db.session.commit()
     root_url = request.root_url
     full_short_link = urljoin(root_url, urlmap.short)
-    return jsonify({
-        'url': urlmap.original,
-        'short_link': full_short_link
-        }
-    ), CREATED_CODE
+    return jsonify(
+        {'url': urlmap.original, 'short_link': full_short_link}), CREATED_CODE
 
 
 @app.route('/api/id/<string:short_id>/', methods=['GET', ])
