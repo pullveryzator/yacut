@@ -5,7 +5,7 @@ from flask import jsonify, request
 from . import app, db
 from .constants import (CREATED_CODE, PAGE_NOT_FOUND_ERROR_CODE,
                         SUCCESSFULL_CODE)
-from .error_handlers import YaCutAPIException
+from .exceptions import YaCutAPIException
 from .models import URLMap
 from .utils import get_unique_short_id
 from .validators import validate_short_id
