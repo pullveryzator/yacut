@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 from flask import jsonify, request
 
 from . import app, db
+from .constants import (CREATED_CODE, PAGE_NOT_FOUND_ERROR_CODE,
+                        SUCCESSFULL_CODE)
 from .error_handlers import YaCutAPIException
 from .models import URLMap
 from .validators import validate_short_id
@@ -40,12 +42,15 @@ def create_id():
         'url': urlmap.original,
         'short_link': full_short_link
         }
-    ), 201
+    ), CREATED_CODE
 
 
 @app.route('/api/id/<string:short_id>/', methods=['GET', ])
 def get_url(short_id):
     urlmap = URLMap.query.filter_by(short=short_id).first()
     if urlmap is None:
-        raise YaCutAPIException('Указанный id не найден', 404)
-    return jsonify({'url': urlmap.original}), 200
+        raise YaCutAPIException(
+            'Указанный id не найден',
+            PAGE_NOT_FOUND_ERROR_CODE
+        )
+    return jsonify({'url': urlmap.original}), SUCCESSFULL_CODE

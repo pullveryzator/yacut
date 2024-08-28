@@ -1,21 +1,23 @@
 from flask import jsonify, render_template
 
 from . import app, db
+from .constants import (BAD_REQUEST_ERROR_CODE, INTERNAL_SERVER_ERROR_CODE,
+                        PAGE_NOT_FOUND_ERROR_CODE)
 
 
-@app.errorhandler(404)
+@app.errorhandler(PAGE_NOT_FOUND_ERROR_CODE)
 def page_not_found(error):
-    return render_template('404.html'), 404
+    return render_template('404.html'), PAGE_NOT_FOUND_ERROR_CODE
 
 
-@app.errorhandler(500)
+@app.errorhandler(INTERNAL_SERVER_ERROR_CODE)
 def internal_error(error):
     db.session.rollback()
-    return render_template('500.html'), 500
+    return render_template('500.html'), INTERNAL_SERVER_ERROR_CODE
 
 
 class YaCutAPIException(Exception):
-    status_code = 400
+    status_code = BAD_REQUEST_ERROR_CODE
 
     def __init__(self, message, status_code=None):
         super().__init__()

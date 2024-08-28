@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 from flask import flash, redirect, render_template, request
 
 from . import app, db
-from .constants import CUSTOM_ID_DEFAULT_LENGTH
+from .constants import CUSTOM_ID_DEFAULT_LENGTH, PAGE_NOT_FOUND_ERROR_CODE
 from .forms import URLMapForm
 from .models import URLMap
 
@@ -60,4 +60,4 @@ def redirect_view(short_id):
     obj = URLMap.query.filter_by(short=short_id).first()
     if obj:
         return redirect(obj.original)
-    return render_template('404.html'), 404
+    return render_template('404.html'), PAGE_NOT_FOUND_ERROR_CODE
