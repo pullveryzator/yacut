@@ -12,3 +12,10 @@ class YaCutAPIException(Exception):
 
     def to_dict(self):
         return dict(message=self.message)
+
+
+class MaxAttemptException(Exception):
+    """Превышено число попыток сгенерировать уникальный идентификатор."""
+
+    def __init__(self, message):
+        super().__init__(message)
